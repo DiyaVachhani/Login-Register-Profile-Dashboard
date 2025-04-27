@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #080710;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+        }
+        .container {
+            background-color: rgba(255,255,255,0.13);
+            padding: 50px;
+            margin-top: 50px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 40px rgba(8,7,16,0.6);
+        }
+        .container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ffffff;
+        }
+        .form-group label {
+            color: #ffffff;
+        }
+        .form-control {
+            background-color: rgba(255,255,255,0.07);
+            color: #000000;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+        .form-control:focus {
+            background-color: rgba(255,255,255,0.07);
+            border-color: #ffffff;
+            box-shadow: none;
+        }
+        .editable {
+            color: #ffffff !important;
+        }
+        .btn-secondary {
+            background-color: #23a2f6;
+            border-color: #23a2f6;
+            margin-right: 10px;
+        }
+        .btn-secondary:hover {
+            background-color: #1845ad;
+        }
+        .btn-primary {
+            background-color: #f09819;
+            border-color: #f09819;
+        }
+        .btn-primary:hover {
+            background-color: #ff512f;
+        }
+        .btn-dashboard {
+            background-color: #28a745;
+            border-color: #28a745;
+            margin-right: 10px;
+        }
+        .btn-dashboard:hover {
+            background-color: #218838;
+        }
+        .alert {
+            margin-top: 20px;
+        }
+        .text-left {
+            padding-left: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Profile</h2>
+        {% if messages %}
+        <ul class="text-left">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <form method="POST" id="profile-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" name="username" value="{{ user.username }}" readonly required>
+            </div>
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}" readonly required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}" readonly required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" name="email" value="{{ user.email }}" readonly required>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" class="form-control" name="address" value="{{user.address}}" placeholder="Enter your address" readonly required>
+            </div>
+            <div class="form-group">
+                <label for="phone_number">Mobile Number:</label>
+                <input type="text" class="form-control" name="phone_number" value="{{user.phone_number}}" placeholder="Enter your phone_number" readonly required maxlength="12">
+            </div>
+
+            <!-- Update Button (Initial State) -->
+            <button type="button" class="btn btn-secondary" id="update-button">Update</button>
+            
+            <!-- Save Button (Hidden Initially) -->
+            <button type="submit" class="btn btn-primary" id="save-button" style="display: none;">Save</button>
+
+            <!-- Dashboard Button -->
+            <a href="{% url 'dashboard' %}" class="btn btn-dashboard">Dashboard</a>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('update-button').addEventListener('click', function() {
+            // Make fields editable and change text color to white
+            document.querySelectorAll('.form-control').forEach(function(input) {
+                input.removeAttribute('readonly');
+                input.classList.add('editable');  // Change input text to white
+            });
+
+            // Show Save button and hide Update button
+            document.getElementById('update-button').style.display = 'none';
+            document.getElementById('save-button').style.display = 'inline-block';
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
